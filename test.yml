@@ -1,0 +1,23 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      name: "Constant load of 10 users per second for 60 seconds"
+  defaults:
+    headers:
+      content-type: "application/json"
+scenarios:
+  - flow:
+      - patch:
+          url: "/jobs/f8ca4a90-f76f-437b-bd39-381bcc299efb?page=1&limit=10"
+          json:
+            name: "test env"
+            description: "Send a daily email report with sales metrics"
+            cronExpression: "* * * * *"
+            endpoint: "https://api.example.com/send-email"
+            payload:
+              reportType: "sales"
+              recipients:
+                - "user1@example.com"
+                - "user2@example.com"
