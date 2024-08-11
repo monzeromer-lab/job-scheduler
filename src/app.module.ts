@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { CacheModule } from '@nestjs/cache-manager';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { redisStore } from 'cache-manager-redis-yet';
@@ -38,6 +37,6 @@ import { JobEntity } from './jobs/entities/job.entity';
   }),
   JobsModule,],
   controllers: [],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}
