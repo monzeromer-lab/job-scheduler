@@ -10,7 +10,8 @@ export class JobsCacheMiddleware implements NestMiddleware {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, private readonly jobsService: JobsService) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const { page, limit } = req.query as GetJobsQueryDto;
+    Logger.log('mid')
+    const { page, limit } = req.query as unknown as GetJobsQueryDto;
 
     const cacheKey = `JOBS:${page}-${limit}`;
 

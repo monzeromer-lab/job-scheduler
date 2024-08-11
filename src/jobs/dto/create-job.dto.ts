@@ -16,14 +16,6 @@ export class CreateJobDto {
   @ApiProperty({ description: 'The name of the job, which must be unique' })
   name: string;
 
-  @Type(() => Date)
-  @IsDateString()
-  @ApiProperty({
-    description:
-      'The timestamp of the last time the job was executed. This field is nullable, as it may not have been executed yet',
-  })
-  lastRun: Date;
-
   @IsOptional()
   @IsString()
   @ApiProperty({ description: 'An optional text field for describing the job' })

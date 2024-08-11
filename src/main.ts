@@ -1,6 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {
+  DocumentBuilder,
+  SwaggerDocumentOptions,
+  SwaggerModule,
+} from '@nestjs/swagger';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 
 async function bootstrap() {
@@ -15,11 +19,13 @@ async function bootstrap() {
     .setDescription('A scheduler microservice that allows job scheduling')
     .setVersion('1.0')
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
 
   await app.listen(3000);
 }

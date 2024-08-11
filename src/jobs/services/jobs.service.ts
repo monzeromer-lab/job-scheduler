@@ -38,7 +38,7 @@ export class JobsService {
       },
     ).catch((e) => {
       if (e.code = 'QueryFailedError') {
-        throw new ConflictException();
+        throw new ConflictException(e);
       }
       throw new InternalServerErrorException();
     });

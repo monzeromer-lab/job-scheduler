@@ -7,10 +7,11 @@ import {
   IsDateString,
 } from 'class-validator';
 import { IsCronExpression } from '../common/decorators/isCronExpression';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import { CreateJobDto } from './create-job.dto';
 
-export class UpdateJobDto {
+export class UpdateJobDto extends CreateJobDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ description: 'The name of the job, which must be unique' })
@@ -20,14 +21,6 @@ export class UpdateJobDto {
   @IsString()
   @ApiProperty({ description: 'An optional text field for describing the job' })
   description?: string;
-
-  @Type(() => Date)
-  @IsDateString()
-  @ApiProperty({
-    description:
-      'The timestamp of the next scheduled execution of the job. This field is required',
-  })
-  nextRun: Date;
 
   @IsString()
   @IsNotEmpty()
