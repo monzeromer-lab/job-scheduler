@@ -53,3 +53,13 @@ REDIS_PORT=6379
 ## Swagger API Documentation
 
 Swagger documentation is available at [http://localhost:3000/api](http://localhost:3000/api).
+
+## Scaling
+**Horizontal scaling**:
+We can deploy multiple instance of the microservice and add a load balancer to distribute the incoming requests.
+
+**Database**:
+The database can be Replicated and each repilca can handle read or writes only
+
+**Async tasks**:
+Tasks could be queued with tools like bullmq or RabbitMQ.

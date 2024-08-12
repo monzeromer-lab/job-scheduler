@@ -1,17 +1,21 @@
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { Inject, Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { NextFunction } from 'express';
-import { GetJobsQueryDto } from '../dto/find-job.dto';
 import { Request, Response } from 'express';
 import { JobsService } from '../services/jobs.service';
 
 @Injectable()
 export class JobsCacheMiddleware implements NestMiddleware {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, private readonly jobsService: JobsService) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly jobsService: JobsService,
+  ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    Logger.log('mid')
-    const { page, limit } = req.query as unknown as GetJobsQueryDto;
+    const { page, limit } = req.query as unknown as {
+      page: number;
+      limit: number;
+    };
 
     const cacheKey = `JOBS:${page}-${limit}`;
 

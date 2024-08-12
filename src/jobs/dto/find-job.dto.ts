@@ -1,18 +1,17 @@
-import { IsOptional, IsString, IsNumber, Min, Max, IsUUID } from "class-validator";
+import { Transform } from 'class-transformer';
+import { IsNumber, IsUUID } from 'class-validator';
 
-export class GetJobsQueryDto {
-  
-    @IsNumber()
-    @Min(1)
-    limit: number;
-  
-    @IsNumber()
-    @Min(1)
-    page: number;
-  }
+export class GetOneJobQueryDto {
+  @IsUUID()
+  id: string;
+}
 
-  export class GetOneJobQueryDto {
-  
-    @IsUUID()
-    id: string
-  }
+export class FindJobs {
+  @Transform(({ value }) => parseInt(value, 10))
+  @IsNumber()
+  page: number;
+
+  @Transform(({ value }) => parseInt(value, 10))
+  @IsNumber()
+  limit: number;
+}

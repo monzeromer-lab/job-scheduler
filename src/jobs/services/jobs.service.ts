@@ -1,10 +1,13 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateJobDto } from '../dto/create-job.dto';
 import { JobEntity } from '../entities/job.entity';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WorkersService } from './workers.service';
-import { UpdateJobDto } from '../dto/update-job.dto';
 
 @Injectable()
 export class JobsService {
@@ -18,10 +21,10 @@ export class JobsService {
 
   async create(createJobDto: CreateJobDto[]): Promise<JobEntity[]> {
     let Jobs: JobEntity[] = [];
-    
-    await this.dataSource.manager.transaction(
-      async (transactionalEntityManager) => {
-        let jobs = createJobDto.map((job) => {
+
+    await this.dataSource.manager
+      .transaction(async (transactionalEntityManager) => {
+        const jobs = createJobDto.map((job) => {
           return this.EntityManager.create(JobEntity, job);
         });
         await transactionalEntityManager.save(jobs);
@@ -35,13 +38,13 @@ export class JobsService {
             job.cronExpression,
           );
         });
-      },
-    ).catch((e) => {
-      if (e.code = 'QueryFailedError') {
-        throw new ConflictException(e);
-      }
-      throw new InternalServerErrorException();
-    });
+      })
+      .catch((e) => {
+        if ((e.code = 'QueryFailedError')) {
+          throw new ConflictException();
+        }
+        throw new InternalServerErrorException();
+      });
     return Jobs;
   }
 
@@ -50,20 +53,6 @@ export class JobsService {
       skip: (page - 1) * limit,
       take: limit,
     });
-  }
-
-  async updateOne(id: string, data: UpdateJobDto) {
-    try {
-      const job = await this.jobsRepository.findOneBy({ id });
-      const newJob = {
-        ...job,
-        ...data
-      }
-      await this.jobsRepository.save(newJob);
-      return newJob;
-    } catch (error) {
-      throw new InternalServerErrorException()
-    }
   }
 
   async findOne(id: string): Promise<JobEntity | null> {
